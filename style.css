@@ -499,3 +499,43 @@ input[type="range"]::-moz-range-thumb {
         transform: scale(0.55);
     }
 }
+
+.touch-controls {
+    display: none;
+    justify-content: space-between;
+    width: 100%;
+    padding: 15px 20px;
+    margin-top: 10px;
+}
+
+.touch-controls.active {
+    display: flex;
+}
+
+.touch-btn {
+    width: 70px;
+    height: 70px;
+    background: rgba(0, 255, 255, 0.1);
+    border: 2px solid var(--cyan);
+    border-radius: 10px;
+    color: var(--cyan);
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--glow-cyan);
+    transition: all 0.1s ease;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.touch-btn:active,
+.touch-btn.active {
+    background: var(--cyan);
+    color: var(--dark-bg);
+    box-shadow: 0 0 30px var(--cyan), 0 0 60px var(--cyan);
+    transform: scale(0.95);
+}

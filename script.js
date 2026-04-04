@@ -455,7 +455,8 @@ class Game {
         return {
             paddleSpeed: 5,
             ballSpeed: 4,
-            soundEnabled: true
+            soundEnabled: true,
+            touchControlsEnabled: false
         };
     }
 
@@ -469,6 +470,17 @@ class Game {
         document.getElementById('ballSpeed').value = this.settings.ballSpeed;
         document.getElementById('ballSpeedValue').textContent = this.settings.ballSpeed;
         document.getElementById('soundToggle').checked = this.settings.soundEnabled;
+        document.getElementById('touchToggle').checked = this.settings.touchControlsEnabled;
+        this.updateTouchControls();
+    }
+
+    updateTouchControls() {
+        const touchControls = document.getElementById('touchControls');
+        if (this.settings.touchControlsEnabled) {
+            touchControls.classList.add('active');
+        } else {
+            touchControls.classList.remove('active');
+        }
     }
 
     showSettings() {
@@ -640,6 +652,37 @@ class Game {
             this.settings.soundEnabled = e.target.checked;
             this.saveSettings();
         };
+        
+        document.getElementById('touchToggle').onchange = (e) => {
+            this.settings.touchControlsEnabled = e.target.checked;
+            this.saveSettings();
+            this.updateTouchControls();
+        };
+        
+        const touchLeft = document.getElementById('touchLeft');
+        const touchRight = document.getElementById('touchRight');
+        
+        touchLeft.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            touchLeft.classList.add('active');
+            this.paddle.setVelocity(-this.settings.paddleSpeed);
+        });
+        touchLeft.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            touchLeft.classList.remove('active');
+            this.paddle.setVelocity(0);
+        });
+        
+        touchRight.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            touchRight.classList.add('active');
+            this.paddle.setVelocity(this.settings.paddleSpeed);
+        });
+        touchRight.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            touchRight.classList.remove('active');
+            this.paddle.setVelocity(0);
+        });
     }
 
     showMenu() {
