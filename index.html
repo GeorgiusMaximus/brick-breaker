@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Brick Breaker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="grid-background"></div>
+        
+        <div class="hud">
+            <div class="hud-item score-display">
+                <span class="hud-label">SCORE</span>
+                <span class="hud-value" id="score">0</span>
+            </div>
+            <div class="hud-item level-display">
+                <span class="hud-label">LEVEL</span>
+                <span class="hud-value" id="level">1</span>
+            </div>
+            <div class="hud-item lives-display">
+                <span class="hud-label">LIVES</span>
+                <span class="hud-value" id="lives">3</span>
+            </div>
+            <div class="hud-item powerup-display">
+                <span class="hud-label">POWER</span>
+                <div class="powerup-icons" id="powerup-icons"></div>
+            </div>
+            <button class="pause-button" id="hudPauseButton">||</button>
+        </div>
+
+        <div class="canvas-wrapper">
+            <canvas id="gameCanvas" width="800" height="600"></canvas>
+            
+            <div class="overlay start-screen active" id="startScreen">
+                <div class="overlay-content">
+                    <h1 class="game-title">NEON<br>BRICK<span class="highlight">BREAKER</span></h1>
+                <div class="start-instructions">
+                    <p><span class="key">MOUSE</span> or <span class="key">← →</span> to move paddle</p>
+                    <p><span class="key">SPACE</span> to launch ball</p>
+                    <p><span class="key">P</span> to pause</p>
+                    <p><span class="key">R</span> to restart</p>
+                </div>
+                    <div class="button-group">
+                        <button class="neon-button" id="startButton">START GAME</button>
+                        <button class="neon-button secondary" id="settingsButton">SETTINGS</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overlay settings-screen" id="settingsScreen">
+                <div class="overlay-content">
+                    <h2>SETTINGS</h2>
+                    <div class="settings-list">
+                        <div class="setting-item">
+                            <label>Paddle Speed</label>
+                            <div class="slider-container">
+                                <input type="range" id="paddleSpeed" min="1" max="10" value="5">
+                                <span class="slider-value" id="paddleSpeedValue">5</span>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label>Ball Speed</label>
+                            <div class="slider-container">
+                                <input type="range" id="ballSpeed" min="2" max="8" value="4">
+                                <span class="slider-value" id="ballSpeedValue">4</span>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label>Sound Effects</label>
+                            <label class="toggle">
+                                <input type="checkbox" id="soundToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <button class="neon-button secondary" id="backButton">BACK</button>
+                </div>
+            </div>
+
+            <div class="overlay pause-screen" id="pauseScreen">
+                <div class="overlay-content">
+                    <h2>PAUSED</h2>
+                    <div class="button-group vertical">
+                        <button class="neon-button" id="resumeButton">BACK TO GAME</button>
+                        <button class="neon-button" id="pauseSettingsButton">SETTINGS</button>
+                        <button class="neon-button secondary" id="pauseMenuButton">MENU</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overlay gameover-screen" id="gameoverScreen">
+                <div class="overlay-content">
+                    <h2>GAME OVER</h2>
+                    <div class="final-score">
+                        <span class="label">FINAL SCORE</span>
+                        <span class="value" id="finalScore">0</span>
+                    </div>
+                    <div class="button-group">
+                        <button class="neon-button" id="restartButton">RESTART</button>
+                        <button class="neon-button secondary" id="menuButton">MENU</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overlay victory-screen" id="victoryScreen">
+                <div class="overlay-content">
+                    <h2>VICTORY!</h2>
+                    <div class="final-score">
+                        <span class="label">FINAL SCORE</span>
+                        <span class="value" id="victoryScore">0</span>
+                    </div>
+                    <p class="victory-message">You've conquered all levels!</p>
+                    <div class="button-group">
+                        <button class="neon-button" id="playAgainButton">PLAY AGAIN</button>
+                        <button class="neon-button secondary" id="victoryMenuButton">MENU</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overlay level-complete-screen" id="levelCompleteScreen">
+                <div class="overlay-content">
+                    <h2>LEVEL <span id="completedLevel">1</span> COMPLETE</h2>
+                    <div class="level-stats">
+                        <p>Score: <span id="levelScore">0</span></p>
+                    </div>
+                    <button class="neon-button" id="nextLevelButton">NEXT LEVEL</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
