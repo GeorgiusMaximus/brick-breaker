@@ -475,12 +475,6 @@ class Game {
     }
 
     updateTouchControls() {
-        const touchControls = document.getElementById('touchControls');
-        if (this.settings.touchControlsEnabled) {
-            touchControls.classList.add('active');
-        } else {
-            touchControls.classList.remove('active');
-        }
     }
 
     showSettings() {
@@ -662,27 +656,41 @@ class Game {
         const touchLeft = document.getElementById('touchLeft');
         const touchRight = document.getElementById('touchRight');
         
-        touchLeft.addEventListener('touchstart', (e) => {
+        const startLeft = (e) => {
             e.preventDefault();
             touchLeft.classList.add('active');
             this.paddle.setVelocity(-this.settings.paddleSpeed);
-        });
-        touchLeft.addEventListener('touchend', (e) => {
+        };
+        const stopLeft = (e) => {
             e.preventDefault();
             touchLeft.classList.remove('active');
             this.paddle.setVelocity(0);
-        });
+        };
         
-        touchRight.addEventListener('touchstart', (e) => {
+        const startRight = (e) => {
             e.preventDefault();
             touchRight.classList.add('active');
             this.paddle.setVelocity(this.settings.paddleSpeed);
-        });
-        touchRight.addEventListener('touchend', (e) => {
+        };
+        const stopRight = (e) => {
             e.preventDefault();
             touchRight.classList.remove('active');
             this.paddle.setVelocity(0);
-        });
+        };
+        
+        touchLeft.addEventListener('touchstart', startLeft);
+        touchLeft.addEventListener('touchend', stopLeft);
+        touchLeft.addEventListener('touchcancel', stopLeft);
+        touchLeft.addEventListener('mousedown', startLeft);
+        touchLeft.addEventListener('mouseup', stopLeft);
+        touchLeft.addEventListener('mouseleave', stopLeft);
+        
+        touchRight.addEventListener('touchstart', startRight);
+        touchRight.addEventListener('touchend', stopRight);
+        touchRight.addEventListener('touchcancel', stopRight);
+        touchRight.addEventListener('mousedown', startRight);
+        touchRight.addEventListener('mouseup', stopRight);
+        touchRight.addEventListener('mouseleave', stopRight);
     }
 
     showMenu() {
