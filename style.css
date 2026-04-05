@@ -597,16 +597,37 @@ input[type="range"]::-moz-range-thumb {
         right: 3px;
     }
     
-    .overlay-content {
-        padding: 10px;
+    .overlay {
         overflow-y: auto;
-        max-height: 100%;
+        overflow-x: hidden;
+    }
+    
+    .overlay-content {
+        padding: 15px;
+        padding-right: 25px;
+        overflow-y: visible;
+        max-height: none;
+    }
+    
+    .overlay-content::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    .overlay-content::-webkit-scrollbar-track {
+        background: rgba(0, 255, 255, 0.1);
+        border-radius: 4px;
+    }
+    
+    .overlay-content::-webkit-scrollbar-thumb {
+        background: var(--cyan);
+        border-radius: 4px;
     }
     
     .button-group.vertical .neon-button {
-        width: clamp(120px, 40vw, 180px);
-        padding: 8px 20px;
-        font-size: 14px;
+        width: clamp(140px, 45vw, 200px);
+        padding: 12px 25px;
+        font-size: 16px;
+        margin: 8px 0;
     }
 }
 
