@@ -571,6 +571,12 @@ input[type="range"]::-moz-range-thumb {
         font-size: 8px;
     }
     
+    .pause-button {
+        font-size: 10px;
+        padding: 4px 8px;
+        right: 5px;
+    }
+    
     .touch-btn {
         width: clamp(40px, 10vw, 55px);
         height: clamp(40px, 12vw, 65px);
@@ -589,6 +595,18 @@ input[type="range"]::-moz-range-thumb {
         bottom: 3px;
         left: 3px;
         right: 3px;
+    }
+    
+    .overlay-content {
+        padding: 10px;
+        overflow-y: auto;
+        max-height: 100%;
+    }
+    
+    .button-group.vertical .neon-button {
+        width: clamp(120px, 40vw, 180px);
+        padding: 8px 20px;
+        font-size: 14px;
     }
 }
 
