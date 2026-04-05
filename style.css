@@ -600,27 +600,29 @@ input[type="range"]::-moz-range-thumb {
     .overlay {
         overflow-y: auto;
         overflow-x: hidden;
+        scrollbar-width: thin;
+        scrollbar-color: var(--cyan) rgba(0, 255, 255, 0.1);
+    }
+    
+    .overlay::-webkit-scrollbar {
+        width: 10px;
+    }
+    
+    .overlay::-webkit-scrollbar-track {
+        background: rgba(0, 255, 255, 0.1);
+        border-radius: 5px;
+    }
+    
+    .overlay::-webkit-scrollbar-thumb {
+        background: var(--cyan);
+        border-radius: 5px;
+        border: 2px solid var(--dark-bg);
     }
     
     .overlay-content {
         padding: 15px;
-        padding-right: 25px;
         overflow-y: visible;
         max-height: none;
-    }
-    
-    .overlay-content::-webkit-scrollbar {
-        width: 8px;
-    }
-    
-    .overlay-content::-webkit-scrollbar-track {
-        background: rgba(0, 255, 255, 0.1);
-        border-radius: 4px;
-    }
-    
-    .overlay-content::-webkit-scrollbar-thumb {
-        background: var(--cyan);
-        border-radius: 4px;
     }
     
     .button-group.vertical .neon-button {
