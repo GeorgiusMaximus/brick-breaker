@@ -533,11 +533,23 @@ input[type="range"]::-moz-range-thumb {
     transform: scale(0.95);
 }
 
-/* Landscape mobile - wider touch buttons */
-@media (orientation: landscape) and (max-height: 500px) {
+/* Landscape mobile - scale to fit screen */
+@media (orientation: landscape) and (max-height: 600px) {
+    body {
+        justify-content: flex-start;
+        padding-top: 5px;
+    }
+    
+    .game-container {
+        width: auto;
+        max-width: 100vw;
+        height: 98vh;
+        padding: 5px;
+    }
+    
     .hud {
-        padding: 5px 10px;
-        margin-bottom: 5px;
+        padding: 3px 8px;
+        margin-bottom: 3px;
     }
     
     .hud-label {
@@ -545,12 +557,25 @@ input[type="range"]::-moz-range-thumb {
     }
     
     .hud-value {
-        font-size: 14px;
+        font-size: 12px;
+    }
+    
+    .powerup-icon {
+        width: 14px;
+        height: 14px;
+        font-size: 8px;
     }
     
     .touch-btn {
-        width: clamp(50px, 15vw, 70px);
-        height: clamp(50px, 18vw, 80px);
+        width: clamp(45px, 12vw, 60px);
+        height: clamp(45px, 14vw, 70px);
+        font-size: 20px;
+    }
+    
+    .canvas-wrapper {
+        width: auto;
+        height: calc(98vh - 60px);
+        max-width: 100%;
     }
 }
 
