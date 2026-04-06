@@ -503,9 +503,9 @@ input[type="range"]::-moz-range-thumb {
 .touch-btn {
     width: clamp(60px, 18vw, 80px);
     height: clamp(70px, 22vw, 100px);
-    background: rgba(0, 255, 255, 0.2);
-    border: 2px solid var(--cyan);
-    border-radius: 10px;
+    background: rgba(0, 255, 255, 0.15);
+    border: 3px solid var(--cyan);
+    border-radius: 15px;
     color: var(--cyan);
     font-size: clamp(24px, 6vw, 36px);
     font-weight: bold;
@@ -513,23 +513,18 @@ input[type="range"]::-moz-range-thumb {
     align-items: center;
     justify-content: center;
     box-shadow: var(--glow-cyan);
+    transition: all 0s;
     user-select: none;
     -webkit-user-select: none;
-    -webkit-tap-highlight-color: transparent;
-    touch-action: none;
+    touch-action: manipulation;
     pointer-events: auto;
-}
-
-.touch-btn:hover {
-    background: rgba(0, 255, 255, 0.3);
 }
 
 .touch-btn:active,
 .touch-btn.active {
     background: rgba(0, 255, 255, 0.5);
     color: #fff;
-    box-shadow: 0 0 30px var(--cyan), 0 0 60px var(--cyan);
-    transform: scale(0.95);
+    box-shadow: 0 0 40px var(--cyan), 0 0 80px var(--cyan);
 }
 
 /* Landscape mobile - scale to fit screen */
