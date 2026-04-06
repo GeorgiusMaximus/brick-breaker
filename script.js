@@ -595,7 +595,6 @@ class Game {
                 break;
         }
     }
-    }
 
     setupEventListeners() {
         canvas.addEventListener('mousemove', (e) => {
