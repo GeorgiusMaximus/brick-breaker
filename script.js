@@ -685,12 +685,14 @@ class Game {
         
         const startLeft = (e) => {
             e.preventDefault();
+            e.stopPropagation();
             touchLeft.classList.add('active');
             this.touchLeft = true;
             this.updatePaddleVelocity();
         };
         const stopLeft = (e) => {
             e.preventDefault();
+            e.stopPropagation();
             touchLeft.classList.remove('active');
             this.touchLeft = false;
             this.updatePaddleVelocity();
@@ -698,27 +700,29 @@ class Game {
         
         const startRight = (e) => {
             e.preventDefault();
+            e.stopPropagation();
             touchRight.classList.add('active');
             this.touchRight = true;
             this.updatePaddleVelocity();
         };
         const stopRight = (e) => {
             e.preventDefault();
+            e.stopPropagation();
             touchRight.classList.remove('active');
             this.touchRight = false;
             this.updatePaddleVelocity();
         };
         
-        touchLeft.addEventListener('touchstart', startLeft);
-        touchLeft.addEventListener('touchend', stopLeft);
-        touchLeft.addEventListener('touchcancel', stopLeft);
+        touchLeft.addEventListener('touchstart', startLeft, { passive: false });
+        touchLeft.addEventListener('touchend', stopLeft, { passive: false });
+        touchLeft.addEventListener('touchcancel', stopLeft, { passive: false });
         touchLeft.addEventListener('mousedown', startLeft);
         touchLeft.addEventListener('mouseup', stopLeft);
         touchLeft.addEventListener('mouseleave', stopLeft);
         
-        touchRight.addEventListener('touchstart', startRight);
-        touchRight.addEventListener('touchend', stopRight);
-        touchRight.addEventListener('touchcancel', stopRight);
+        touchRight.addEventListener('touchstart', startRight, { passive: false });
+        touchRight.addEventListener('touchend', stopRight, { passive: false });
+        touchRight.addEventListener('touchcancel', stopRight, { passive: false });
         touchRight.addEventListener('mousedown', startRight);
         touchRight.addEventListener('mouseup', stopRight);
         touchRight.addEventListener('mouseleave', stopRight);

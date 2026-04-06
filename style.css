@@ -509,15 +509,14 @@ input[type="range"]::-moz-range-thumb {
     color: var(--cyan);
     font-size: clamp(24px, 6vw, 36px);
     font-weight: bold;
-    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     box-shadow: var(--glow-cyan);
-    transition: all 0.1s ease;
     user-select: none;
     -webkit-user-select: none;
-    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: none;
     pointer-events: auto;
 }
 
