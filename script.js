@@ -242,15 +242,19 @@ class Ball {
         this.attached = false;
     }
 
-    update(paddle) {
+    update(paddle, showTrail = true) {
         if (this.attached) {
             this.x = paddle.x;
             this.y = paddle.y - paddle.height / 2 - this.radius - 5;
             return;
         }
 
-        this.trail.addPoint(this.x, this.y);
-        this.trail.update();
+        if (showTrail) {
+            this.trail.addPoint(this.x, this.y);
+            this.trail.update();
+        } else {
+            this.trail.clear();
+        }
 
         this.x += this.vx;
         this.y += this.vy;
@@ -269,8 +273,10 @@ class Ball {
         }
     }
 
-    draw(ctx) {
-        this.trail.draw(ctx, this.isFire ? COLORS.orange : (this.isSlow ? COLORS.blue : COLORS.cyan));
+    draw(ctx, showTrail = true) {
+        if (showTrail) {
+            this.trail.draw(ctx, this.isFire ? COLORS.orange : (this.isSlow ? COLORS.blue : COLORS.cyan));
+        }
 
         ctx.save();
         ctx.fillStyle = this.isFire ? COLORS.orange : (this.isSlow ? COLORS.blue : COLORS.cyan);
@@ -457,10 +463,17 @@ class Game {
             return JSON.parse(saved);
         }
         return {
+            difficulty: 'normal',
             paddleSpeed: 5,
             ballSpeed: 4,
+            startingLives: 3,
             soundEnabled: true,
-            touchControlsEnabled: false
+            soundVolume: 50,
+            ballTrailEnabled: true,
+            screenShakeEnabled: true,
+            showFps: false,
+            touchControlsEnabled: false,
+            autoLaunch: false
         };
     }
 
@@ -469,13 +482,23 @@ class Game {
     }
 
     applySettings() {
+        document.getElementById('difficulty').value = this.settings.difficulty;
         document.getElementById('paddleSpeed').value = this.settings.paddleSpeed;
         document.getElementById('paddleSpeedValue').textContent = this.settings.paddleSpeed;
         document.getElementById('ballSpeed').value = this.settings.ballSpeed;
         document.getElementById('ballSpeedValue').textContent = this.settings.ballSpeed;
+        document.getElementById('startingLives').value = this.settings.startingLives;
+        document.getElementById('startingLivesValue').textContent = this.settings.startingLives;
         document.getElementById('soundToggle').checked = this.settings.soundEnabled;
+        document.getElementById('soundVolume').value = this.settings.soundVolume;
+        document.getElementById('soundVolumeValue').textContent = this.settings.soundVolume;
+        document.getElementById('ballTrailToggle').checked = this.settings.ballTrailEnabled;
+        document.getElementById('screenShakeToggle').checked = this.settings.screenShakeEnabled;
+        document.getElementById('showFpsToggle').checked = this.settings.showFps;
         document.getElementById('touchToggle').checked = this.settings.touchControlsEnabled;
+        document.getElementById('autoLaunchToggle').checked = this.settings.autoLaunch;
         this.updateTouchControls();
+        this.updateFpsDisplay();
     }
 
     updateTouchControls() {
@@ -484,6 +507,23 @@ class Game {
             touchControls.style.display = 'flex';
         } else {
             touchControls.style.display = 'none';
+        }
+    }
+
+    updateFpsDisplay() {
+        let fpsDisplay = document.getElementById('fpsDisplay');
+        if (this.settings.showFps) {
+            if (!fpsDisplay) {
+                fpsDisplay = document.createElement('div');
+                fpsDisplay.id = 'fpsDisplay';
+                fpsDisplay.style.cssText = 'position:absolute;top:10px;left:10px;color:var(--lime);font-size:12px;z-index:1000;';
+                document.getElementById('gameCanvas').parentElement.appendChild(fpsDisplay);
+            }
+            fpsDisplay.style.display = 'block';
+        } else {
+            if (fpsDisplay) {
+                fpsDisplay.style.display = 'none';
+            }
         }
     }
 
@@ -510,6 +550,8 @@ class Game {
     playSound(type) {
         if (!this.audioCtx || !this.settings.soundEnabled) return;
         
+        const volume = (this.settings.soundVolume || 50) / 100;
+        
         const oscillator = this.audioCtx.createOscillator();
         const gainNode = this.audioCtx.createGain();
         
@@ -520,7 +562,7 @@ class Game {
             case 'hit':
                 oscillator.frequency.setValueAtTime(400, this.audioCtx.currentTime);
                 oscillator.frequency.exponentialRampToValueAtTime(200, this.audioCtx.currentTime + 0.1);
-                gainNode.gain.setValueAtTime(0.1, this.audioCtx.currentTime);
+                gainNode.gain.setValueAtTime(0.1 * volume, this.audioCtx.currentTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioCtx.currentTime + 0.1);
                 oscillator.start();
                 oscillator.stop(this.audioCtx.currentTime + 0.1);
@@ -528,7 +570,7 @@ class Game {
             case 'brick':
                 oscillator.frequency.setValueAtTime(600, this.audioCtx.currentTime);
                 oscillator.frequency.exponentialRampToValueAtTime(300, this.audioCtx.currentTime + 0.15);
-                gainNode.gain.setValueAtTime(0.15, this.audioCtx.currentTime);
+                gainNode.gain.setValueAtTime(0.15 * volume, this.audioCtx.currentTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioCtx.currentTime + 0.15);
                 oscillator.start();
                 oscillator.stop(this.audioCtx.currentTime + 0.15);
@@ -537,7 +579,7 @@ class Game {
                 oscillator.type = 'sine';
                 oscillator.frequency.setValueAtTime(400, this.audioCtx.currentTime);
                 oscillator.frequency.exponentialRampToValueAtTime(800, this.audioCtx.currentTime + 0.2);
-                gainNode.gain.setValueAtTime(0.1, this.audioCtx.currentTime);
+                gainNode.gain.setValueAtTime(0.1 * volume, this.audioCtx.currentTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioCtx.currentTime + 0.2);
                 oscillator.start();
                 oscillator.stop(this.audioCtx.currentTime + 0.2);
@@ -546,12 +588,13 @@ class Game {
                 oscillator.type = 'sawtooth';
                 oscillator.frequency.setValueAtTime(300, this.audioCtx.currentTime);
                 oscillator.frequency.exponentialRampToValueAtTime(100, this.audioCtx.currentTime + 0.5);
-                gainNode.gain.setValueAtTime(0.1, this.audioCtx.currentTime);
+                gainNode.gain.setValueAtTime(0.1 * volume, this.audioCtx.currentTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioCtx.currentTime + 0.5);
                 oscillator.start();
                 oscillator.stop(this.audioCtx.currentTime + 0.5);
                 break;
         }
+    }
     }
 
     setupEventListeners() {
@@ -662,6 +705,11 @@ class Game {
         document.getElementById('pauseSettingsButton').onclick = () => this.openPauseSettings();
         document.getElementById('pauseMenuButton').onclick = () => this.showMenu();
         
+        document.getElementById('difficulty').onchange = (e) => {
+            this.settings.difficulty = e.target.value;
+            this.saveSettings();
+        };
+        
         document.getElementById('paddleSpeed').oninput = (e) => {
             this.settings.paddleSpeed = parseInt(e.target.value);
             document.getElementById('paddleSpeedValue').textContent = this.settings.paddleSpeed;
@@ -674,15 +722,48 @@ class Game {
             this.saveSettings();
         };
         
+        document.getElementById('startingLives').oninput = (e) => {
+            this.settings.startingLives = parseInt(e.target.value);
+            document.getElementById('startingLivesValue').textContent = this.settings.startingLives;
+            this.saveSettings();
+        };
+        
         document.getElementById('soundToggle').onchange = (e) => {
             this.settings.soundEnabled = e.target.checked;
             this.saveSettings();
+        };
+        
+        document.getElementById('soundVolume').oninput = (e) => {
+            this.settings.soundVolume = parseInt(e.target.value);
+            document.getElementById('soundVolumeValue').textContent = this.settings.soundVolume;
+            this.saveSettings();
+        };
+        
+        document.getElementById('ballTrailToggle').onchange = (e) => {
+            this.settings.ballTrailEnabled = e.target.checked;
+            this.saveSettings();
+        };
+        
+        document.getElementById('screenShakeToggle').onchange = (e) => {
+            this.settings.screenShakeEnabled = e.target.checked;
+            this.saveSettings();
+        };
+        
+        document.getElementById('showFpsToggle').onchange = (e) => {
+            this.settings.showFps = e.target.checked;
+            this.saveSettings();
+            this.updateFpsDisplay();
         };
         
         document.getElementById('touchToggle').onchange = (e) => {
             this.settings.touchControlsEnabled = e.target.checked;
             this.saveSettings();
             this.updateTouchControls();
+        };
+        
+        document.getElementById('autoLaunchToggle').onchange = (e) => {
+            this.settings.autoLaunch = e.target.checked;
+            this.saveSettings();
         };
         
         const touchLeft = document.getElementById('touchLeft');
@@ -837,9 +918,14 @@ class Game {
         
         this.state = GameState.PLAYING;
         this.score = 0;
-        this.lives = 3;
+        this.lives = this.settings.startingLives;
         this.level = 1;
-        this.balls = [new Ball(this.paddle.x, this.paddle.y, 8, this.settings.ballSpeed)];
+        
+        let ballSpeed = this.settings.ballSpeed;
+        if (this.settings.difficulty === 'easy') ballSpeed *= 0.8;
+        if (this.settings.difficulty === 'hard') ballSpeed *= 1.2;
+        
+        this.balls = [new Ball(this.paddle.x, this.paddle.y, 8, ballSpeed)];
         this.particles = [];
         this.powerUps = [];
         this.activePowerUps = {};
@@ -848,6 +934,14 @@ class Game {
         this.createLevel();
         this.hideOverlays();
         this.updateUI();
+        
+        if (this.settings.autoLaunch) {
+            this.balls.forEach(ball => {
+                if (ball.attached) {
+                    ball.launch();
+                }
+            });
+        }
         
         if (!this.animationId) {
             this.lastTime = performance.now();
@@ -928,7 +1022,9 @@ class Game {
     }
 
     addScreenShake(intensity) {
-        this.screenShake.intensity = Math.min(this.screenShake.intensity + intensity, 15);
+        if (this.settings.screenShakeEnabled) {
+            this.screenShake.intensity = Math.min(this.screenShake.intensity + intensity, 15);
+        }
     }
 
     createExplosion(x, y, color, count = 15) {
@@ -1029,7 +1125,7 @@ class Game {
         this.paddle.update();
         
         this.balls.forEach(ball => {
-            ball.update(this.paddle);
+            ball.update(this.paddle, this.settings.ballTrailEnabled);
             
             if (!ball.attached && ball.collidesWithPaddle(this.paddle)) {
                 ball.bounceOffPaddle(this.paddle);
@@ -1140,7 +1236,7 @@ class Game {
         this.powerUps.forEach(powerUp => powerUp.draw(ctx));
         this.particles.forEach(p => p.draw(ctx));
         this.paddle.draw(ctx);
-        this.balls.forEach(ball => ball.draw(ctx));
+        this.balls.forEach(ball => ball.draw(ctx, this.settings.ballTrailEnabled));
 
         ctx.restore();
     }
@@ -1148,6 +1244,14 @@ class Game {
     gameLoop(currentTime) {
         const deltaTime = currentTime - this.lastTime;
         this.lastTime = currentTime;
+        
+        if (this.settings.showFps) {
+            const fps = Math.round(1000 / deltaTime);
+            const fpsDisplay = document.getElementById('fpsDisplay');
+            if (fpsDisplay) {
+                fpsDisplay.textContent = `FPS: ${fps}`;
+            }
+        }
 
         if (this.state === GameState.PLAYING) {
             this.update(deltaTime);

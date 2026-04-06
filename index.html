@@ -57,6 +57,14 @@
                     <h2>SETTINGS</h2>
                     <div class="settings-list">
                         <div class="setting-item">
+                            <label>Difficulty</label>
+                            <select id="difficulty">
+                                <option value="easy">Easy</option>
+                                <option value="normal" selected>Normal</option>
+                                <option value="hard">Hard</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
                             <label>Paddle Speed</label>
                             <div class="slider-container">
                                 <input type="range" id="paddleSpeed" min="1" max="10" value="5">
@@ -71,6 +79,13 @@
                             </div>
                         </div>
                         <div class="setting-item">
+                            <label>Starting Lives</label>
+                            <div class="slider-container">
+                                <input type="range" id="startingLives" min="1" max="5" value="3">
+                                <span class="slider-value" id="startingLivesValue">3</span>
+                            </div>
+                        </div>
+                        <div class="setting-item">
                             <label>Sound Effects</label>
                             <label class="toggle">
                                 <input type="checkbox" id="soundToggle" checked>
@@ -78,9 +93,44 @@
                             </label>
                         </div>
                         <div class="setting-item">
+                            <label>Sound Volume</label>
+                            <div class="slider-container">
+                                <input type="range" id="soundVolume" min="0" max="100" value="50">
+                                <span class="slider-value" id="soundVolumeValue">50</span>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label>Ball Trail</label>
+                            <label class="toggle">
+                                <input type="checkbox" id="ballTrailToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label>Screen Shake</label>
+                            <label class="toggle">
+                                <input type="checkbox" id="screenShakeToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label>Show FPS</label>
+                            <label class="toggle">
+                                <input type="checkbox" id="showFpsToggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
                             <label>Touch Controls</label>
                             <label class="toggle">
                                 <input type="checkbox" id="touchToggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label>Auto-Launch</label>
+                            <label class="toggle">
+                                <input type="checkbox" id="autoLaunchToggle">
                                 <span class="toggle-slider"></span>
                             </label>
                         </div>
