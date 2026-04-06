@@ -472,7 +472,7 @@ class Game {
             ballTrailEnabled: true,
             screenShakeEnabled: true,
             showFps: false,
-            touchControlsEnabled: false,
+            touchControlsEnabled: true,
             autoLaunch: false
         };
     }
