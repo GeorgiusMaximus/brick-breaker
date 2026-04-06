@@ -217,15 +217,18 @@ body {
     background: rgba(5, 5, 8, 0.95);
     display: flex;
     justify-content: center;
+    align-items: center;
     z-index: 100;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
+    pointer-events: none;
 }
 
 .overlay.active {
     opacity: 1;
     visibility: visible;
+    pointer-events: auto;
 }
 
 .overlay-content {
@@ -234,10 +237,10 @@ body {
     pointer-events: none;
     user-select: none;
     width: 100%;
-    max-width: 400px;
+    max-width: 100%;
     max-height: 100%;
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: visible;
 }
 
 .overlay-content * {
@@ -270,17 +273,23 @@ body {
 }
 
 .game-title {
-    font-size: clamp(24px, 6vw, 48px);
+    font-size: clamp(20px, 5vw, 40px);
     font-weight: 900;
     line-height: 1.1;
     margin-bottom: 20px;
     color: #fff;
     text-shadow: var(--glow-cyan);
+    word-wrap: break-word;
+    max-width: 100%;
 }
 
 .game-title .highlight {
     color: var(--magenta);
     text-shadow: var(--glow-magenta);
+}
+
+.start-screen .overlay-content {
+    max-width: 100%;
 }
 
 .start-instructions {
@@ -643,10 +652,19 @@ select:focus {
         right: 3px;
     }
     
+    .overlay {
+        align-items: flex-start;
+        overflow-y: auto;
+    }
+    
     .overlay-content {
         padding: 15px;
         box-sizing: border-box;
         max-height: calc(100vh - 20px);
+    }
+    
+    .overlay-content * {
+        pointer-events: auto;
     }
     
     .pause-screen .overlay-content,
