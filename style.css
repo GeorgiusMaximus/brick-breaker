@@ -496,7 +496,6 @@ input[type="range"]::-moz-range-thumb {
     left: 5px;
     right: 5px;
     justify-content: space-between;
-    pointer-events: none;
     z-index: 50;
 }
 
@@ -513,11 +512,11 @@ input[type="range"]::-moz-range-thumb {
     align-items: center;
     justify-content: center;
     box-shadow: var(--glow-cyan);
-    transition: all 0s;
+    transition: all 0.05s;
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
-    pointer-events: auto;
+    cursor: pointer;
 }
 
 .touch-btn:active,
