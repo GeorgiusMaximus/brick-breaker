@@ -527,6 +527,13 @@ class Game {
         }
     }
 
+    getBallSpeed() {
+        let speed = this.settings.ballSpeed;
+        if (this.settings.difficulty === 'easy') speed *= 0.8;
+        if (this.settings.difficulty === 'hard') speed *= 1.2;
+        return speed;
+    }
+
     showSettings() {
         this.applySettings();
         document.querySelectorAll('.overlay').forEach(o => o.classList.remove('active'));
@@ -920,11 +927,7 @@ class Game {
         this.lives = this.settings.startingLives;
         this.level = 1;
         
-        let ballSpeed = this.settings.ballSpeed;
-        if (this.settings.difficulty === 'easy') ballSpeed *= 0.8;
-        if (this.settings.difficulty === 'hard') ballSpeed *= 1.2;
-        
-        this.balls = [new Ball(this.paddle.x, this.paddle.y, 8, ballSpeed)];
+        this.balls = [new Ball(this.paddle.x, this.paddle.y, 8, this.getBallSpeed())];
         this.particles = [];
         this.powerUps = [];
         this.activePowerUps = {};
@@ -971,7 +974,7 @@ class Game {
             return;
         }
         
-        this.balls = [new Ball(this.paddle.x, this.paddle.y, 8, this.settings.ballSpeed)];
+        this.balls = [new Ball(this.paddle.x, this.paddle.y, 8, this.getBallSpeed())];
         this.particles = [];
         this.powerUps = [];
         this.activePowerUps = {};
@@ -1014,7 +1017,7 @@ class Game {
         if (this.lives <= 0) {
             this.gameOver();
         } else {
-            this.balls = [new Ball(this.paddle.x, this.paddle.y, 8, this.settings.ballSpeed)];
+            this.balls = [new Ball(this.paddle.x, this.paddle.y, 8, this.getBallSpeed())];
             this.paddle.reset();
             this.activePowerUps = {};
         }
