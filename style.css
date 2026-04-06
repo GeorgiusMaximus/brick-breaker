@@ -217,33 +217,10 @@ body {
     background: rgba(5, 5, 8, 0.95);
     display: flex;
     justify-content: center;
-    align-items: center;
     z-index: 100;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
-    overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-width: thin;
-    scrollbar-color: var(--cyan) rgba(0, 255, 255, 0.2);
-}
-
-.overlay::-webkit-scrollbar {
-    width: 10px;
-}
-
-.overlay::-webkit-scrollbar-track {
-    background: rgba(0, 255, 255, 0.1);
-    border-radius: 5px;
-}
-
-.overlay::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, var(--magenta), var(--cyan));
-    border-radius: 5px;
-}
-
-.overlay::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, var(--cyan), var(--magenta));
 }
 
 .overlay.active {
@@ -257,13 +234,39 @@ body {
     pointer-events: none;
     user-select: none;
     width: 100%;
+    max-width: 400px;
     max-height: 100%;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .overlay-content * {
     pointer-events: auto;
     user-select: none;
+}
+
+/* Neon Scrollbar */
+.overlay-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.overlay-content::-webkit-scrollbar-track {
+    background: rgba(0, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.overlay-content::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--cyan), var(--magenta));
+    border-radius: 4px;
+}
+
+.overlay-content::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--magenta), var(--cyan));
+}
+
+.overlay-content {
+    scrollbar-width: thin;
+    scrollbar-color: var(--cyan) rgba(0, 255, 255, 0.1);
 }
 
 .game-title {
@@ -613,21 +616,27 @@ input[type="range"]::-moz-range-thumb {
     }
     
     .overlay-content {
-        min-height: 100%;
-        padding: 20px 15px 20px 15px;
+        padding: 15px;
         box-sizing: border-box;
+        max-height: calc(100vh - 20px);
+    }
+    
+    .pause-screen .overlay-content,
+    .settings-screen .overlay-content {
+        max-height: calc(100vh - 40px);
+        overflow-y: auto;
     }
     
     .button-group.vertical .neon-button {
-        width: clamp(160px, 50vw, 220px);
-        padding: 15px 30px;
-        font-size: 18px;
-        margin: 10px 0;
+        width: clamp(140px, 40vw, 200px);
+        padding: 12px 20px;
+        font-size: 16px;
+        margin: 8px 0;
         display: block;
     }
     
     .pause-screen .overlay-content h2 {
-        margin-bottom: 30px;
+        margin-bottom: 20px;
     }
 }
 
