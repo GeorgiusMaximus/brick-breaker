@@ -434,6 +434,10 @@ class Game {
         this.activePowerUps = {};
         
         this.screenShake = { x: 0, y: 0, intensity: 0 };
+        this.keyLeft = false;
+        this.keyRight = false;
+        this.touchLeft = false;
+        this.touchRight = false;
         
         this.settings = this.loadSettings();
         
@@ -584,18 +588,41 @@ class Game {
             }
 
             if (e.code === 'ArrowLeft') {
-                this.paddle.setVelocity(-this.settings.paddleSpeed);
+                this.keyLeft = true;
+                this.updatePaddleVelocity();
             }
             if (e.code === 'ArrowRight') {
-                this.paddle.setVelocity(this.settings.paddleSpeed);
+                this.keyRight = true;
+                this.updatePaddleVelocity();
             }
         });
 
         document.addEventListener('keyup', (e) => {
-            if (e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
-                this.paddle.setVelocity(0);
+            if (e.code === 'ArrowLeft') {
+                this.keyLeft = false;
+                this.updatePaddleVelocity();
+            }
+            if (e.code === 'ArrowRight') {
+                this.keyRight = false;
+                this.updatePaddleVelocity();
             }
         });
+    }
+
+    updatePaddleVelocity() {
+        const left = this.keyLeft || this.touchLeft;
+        const right = this.keyRight || this.touchRight;
+        
+        if (left && right) {
+            this.paddle.setVelocity(0);
+        } else if (left) {
+            this.paddle.setVelocity(-this.settings.paddleSpeed);
+        } else if (right) {
+            this.paddle.setVelocity(this.settings.paddleSpeed);
+        } else {
+            this.paddle.setVelocity(0);
+        }
+    }
 
         canvas.addEventListener('touchmove', (e) => {
             e.preventDefault();
@@ -659,23 +686,27 @@ class Game {
         const startLeft = (e) => {
             e.preventDefault();
             touchLeft.classList.add('active');
-            this.paddle.setVelocity(-this.settings.paddleSpeed);
+            this.touchLeft = true;
+            this.updatePaddleVelocity();
         };
         const stopLeft = (e) => {
             e.preventDefault();
             touchLeft.classList.remove('active');
-            this.paddle.setVelocity(0);
+            this.touchLeft = false;
+            this.updatePaddleVelocity();
         };
         
         const startRight = (e) => {
             e.preventDefault();
             touchRight.classList.add('active');
-            this.paddle.setVelocity(this.settings.paddleSpeed);
+            this.touchRight = true;
+            this.updatePaddleVelocity();
         };
         const stopRight = (e) => {
             e.preventDefault();
             touchRight.classList.remove('active');
-            this.paddle.setVelocity(0);
+            this.touchRight = false;
+            this.updatePaddleVelocity();
         };
         
         touchLeft.addEventListener('touchstart', startLeft);
