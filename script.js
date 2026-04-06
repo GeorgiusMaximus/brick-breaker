@@ -479,6 +479,12 @@ class Game {
     }
 
     updateTouchControls() {
+        const touchControls = document.getElementById('touchControls');
+        if (this.settings.touchControlsEnabled) {
+            touchControls.style.display = 'flex';
+        } else {
+            touchControls.style.display = 'none';
+        }
     }
 
     showSettings() {

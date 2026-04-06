@@ -515,13 +515,17 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .touch-controls {
-    display: flex;
+    display: none;
     position: absolute;
     bottom: 5px;
     left: 5px;
     right: 5px;
     justify-content: space-between;
     z-index: 50;
+}
+
+.touch-controls.active {
+    display: flex;
 }
 
 .touch-btn {
