@@ -607,22 +607,6 @@ class Game {
                 this.updatePaddleVelocity();
             }
         });
-    }
-
-    updatePaddleVelocity() {
-        const left = this.keyLeft || this.touchLeft;
-        const right = this.keyRight || this.touchRight;
-        
-        if (left && right) {
-            this.paddle.setVelocity(0);
-        } else if (left) {
-            this.paddle.setVelocity(-this.settings.paddleSpeed);
-        } else if (right) {
-            this.paddle.setVelocity(this.settings.paddleSpeed);
-        } else {
-            this.paddle.setVelocity(0);
-        }
-    }
 
         canvas.addEventListener('touchmove', (e) => {
             e.preventDefault();
@@ -641,6 +625,21 @@ class Game {
                 });
             }
         });
+    }
+
+    updatePaddleVelocity() {
+        const left = this.keyLeft || this.touchLeft;
+        const right = this.keyRight || this.touchRight;
+        
+        if (left && right) {
+            this.paddle.setVelocity(0);
+        } else if (left) {
+            this.paddle.setVelocity(-this.settings.paddleSpeed);
+        } else if (right) {
+            this.paddle.setVelocity(this.settings.paddleSpeed);
+        } else {
+            this.paddle.setVelocity(0);
+        }
     }
 
     setupUI() {
@@ -683,43 +682,75 @@ class Game {
         const touchLeft = document.getElementById('touchLeft');
         const touchRight = document.getElementById('touchRight');
         
-        const handleLeftStart = () => {
+        touchLeft.ontouchstart = (e) => {
+            e.preventDefault();
             touchLeft.classList.add('active');
             this.touchLeft = true;
             this.updatePaddleVelocity();
         };
         
-        const handleLeftEnd = () => {
+        touchLeft.ontouchend = (e) => {
+            e.preventDefault();
             touchLeft.classList.remove('active');
             this.touchLeft = false;
             this.updatePaddleVelocity();
         };
         
-        const handleRightStart = () => {
+        touchRight.ontouchstart = (e) => {
+            e.preventDefault();
             touchRight.classList.add('active');
             this.touchRight = true;
             this.updatePaddleVelocity();
         };
         
-        const handleRightEnd = () => {
+        touchRight.ontouchend = (e) => {
+            e.preventDefault();
             touchRight.classList.remove('active');
             this.touchRight = false;
             this.updatePaddleVelocity();
         };
         
-        touchLeft.addEventListener('touchstart', handleLeftStart);
-        touchLeft.addEventListener('touchend', handleLeftEnd);
-        touchLeft.addEventListener('touchcancel', handleLeftEnd);
-        touchLeft.addEventListener('mousedown', handleLeftStart);
-        touchLeft.addEventListener('mouseup', handleLeftEnd);
-        touchLeft.addEventListener('mouseleave', handleLeftEnd);
+        touchLeft.onmousedown = (e) => {
+            e.preventDefault();
+            touchLeft.classList.add('active');
+            this.touchLeft = true;
+            this.updatePaddleVelocity();
+        };
         
-        touchRight.addEventListener('touchstart', handleRightStart);
-        touchRight.addEventListener('touchend', handleRightEnd);
-        touchRight.addEventListener('touchcancel', handleRightEnd);
-        touchRight.addEventListener('mousedown', handleRightStart);
-        touchRight.addEventListener('mouseup', handleRightEnd);
-        touchRight.addEventListener('mouseleave', handleRightEnd);
+        touchLeft.onmouseup = () => {
+            touchLeft.classList.remove('active');
+            this.touchLeft = false;
+            this.updatePaddleVelocity();
+        };
+        
+        touchLeft.onmouseleave = () => {
+            if (this.touchLeft) {
+                touchLeft.classList.remove('active');
+                this.touchLeft = false;
+                this.updatePaddleVelocity();
+            }
+        };
+        
+        touchRight.onmousedown = (e) => {
+            e.preventDefault();
+            touchRight.classList.add('active');
+            this.touchRight = true;
+            this.updatePaddleVelocity();
+        };
+        
+        touchRight.onmouseup = () => {
+            touchRight.classList.remove('active');
+            this.touchRight = false;
+            this.updatePaddleVelocity();
+        };
+        
+        touchRight.onmouseleave = () => {
+            if (this.touchRight) {
+                touchRight.classList.remove('active');
+                this.touchRight = false;
+                this.updatePaddleVelocity();
+            }
+        };
     }
 
     showMenu() {
