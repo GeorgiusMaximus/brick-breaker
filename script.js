@@ -460,7 +460,16 @@ class Game {
     loadSettings() {
         const saved = localStorage.getItem('brickBreakerSettings');
         if (saved) {
-            return JSON.parse(saved);
+            try {
+                const parsed = JSON.parse(saved);
+                parsed.paddleSpeed = Number(parsed.paddleSpeed) || 5;
+                parsed.ballSpeed = Number(parsed.ballSpeed) || 4;
+                parsed.startingLives = Number(parsed.startingLives) || 3;
+                parsed.soundVolume = Number(parsed.soundVolume) || 50;
+                return parsed;
+            } catch (e) {
+                localStorage.removeItem('brickBreakerSettings');
+            }
         }
         return {
             difficulty: 'normal',
