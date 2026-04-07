@@ -462,10 +462,28 @@ class Game {
         if (saved) {
             try {
                 const parsed = JSON.parse(saved);
-                parsed.paddleSpeed = Number(parsed.paddleSpeed) || 5;
-                parsed.ballSpeed = Number(parsed.ballSpeed) || 4;
-                parsed.startingLives = Number(parsed.startingLives) || 3;
-                parsed.soundVolume = Number(parsed.soundVolume) || 50;
+                const defaults = {
+                    difficulty: 'normal',
+                    paddleSpeed: 6,
+                    ballSpeed: 4,
+                    startingLives: 3,
+                    soundEnabled: true,
+                    soundVolume: 50,
+                    ballTrailEnabled: true,
+                    screenShakeEnabled: true,
+                    showFps: false,
+                    touchControlsEnabled: true,
+                    autoLaunch: false
+                };
+                for (const key in defaults) {
+                    if (parsed[key] === undefined || parsed[key] === null || isNaN(parsed[key])) {
+                        parsed[key] = defaults[key];
+                    }
+                }
+                parsed.paddleSpeed = Math.min(10, Math.max(1, parsed.paddleSpeed));
+                parsed.ballSpeed = Math.min(8, Math.max(2, parsed.ballSpeed));
+                parsed.startingLives = Math.min(5, Math.max(1, parsed.startingLives));
+                parsed.soundVolume = Math.min(100, Math.max(0, parsed.soundVolume));
                 return parsed;
             } catch (e) {
                 localStorage.removeItem('brickBreakerSettings');
@@ -473,7 +491,7 @@ class Game {
         }
         return {
             difficulty: 'normal',
-            paddleSpeed: 5,
+            paddleSpeed: 6,
             ballSpeed: 4,
             startingLives: 3,
             soundEnabled: true,
